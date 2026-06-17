@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f68cf42f7157b449ba657698ea3db3b, type: 3}
+  m_Name: BasicCombo
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.ComboData
+  comboName: Basic combo
+  characterId: Mechanic Girl
+  root:
+    step:
+      stepName: Attack_1
+      requiredInput: 0
+      startupDuration: 0.1
+      activeDuration: 0.2
+      recoveryDuration: 0.3
+      bufferWindow: 0.15
+      damage: 10
+      hitStop: 0.05
+      impulse: {x: 0, y: 0, z: 2}
+      canCancelIntoSpecial: 0
+      animationTrigger: Attack_1
+      clip: {fileID: 0}
+      hitVfx: {fileID: 0}
+      swingSfx: {fileID: 0}
+      hitSfx: {fileID: 0}
+      hitboxOffset: {x: 0, y: 0, z: 1}
+      hitboxSize: {x: 1, y: 1, z: 1}
+      layerMask:
+        serializedVersion: 2
+        m_Bits: 0
+    branches:
+    - input: 0
+      next:
+        step:
+          stepName: 
+          requiredInput: 0
+          startupDuration: 0
+          activeDuration: 0
+          recoveryDuration: 0
+          bufferWindow: 0
+          damage: 0
+          hitStop: 0
+          impulse: {x: 0, y: 0, z: 0}
+          canCancelIntoSpecial: 0
+          animationTrigger: 
+          clip: {fileID: 0}
+          hitVfx: {fileID: 0}
+          swingSfx: {fileID: 0}
+          hitSfx: {fileID: 0}
+          hitboxOffset: {x: 0, y: 0, z: 0}
+          hitboxSize: {x: 0, y: 0, z: 0}
+          layerMask:
+            serializedVersion: 2
+            m_Bits: 0
+        branches: []
+    - input: 0
+      next:
+        step:
+          stepName: 
+          requiredInput: 0
+          startupDuration: 0
+          activeDuration: 0
+          recoveryDuration: 0
+          bufferWindow: 0
+          damage: 0
+          hitStop: 0
+          impulse: {x: 0, y: 0, z: 0}
+          canCancelIntoSpecial: 0
+          animationTrigger: 
+          clip: {fileID: 0}
+          hitVfx: {fileID: 0}
+          swingSfx: {fileID: 0}
+          hitSfx: {fileID: 0}
+          hitboxOffset: {x: 0, y: 0, z: 0}
+          hitboxSize: {x: 0, y: 0, z: 0}
+          layerMask:
+            serializedVersion: 2
+            m_Bits: 0
+        branches: []
+    - input: 1
+      next:
+        step:
+          stepName: 
+          requiredInput: 0
+          startupDuration: 0
+          activeDuration: 0
+          recoveryDuration: 0
+          bufferWindow: 0
+          damage: 0
+          hitStop: 0
+          impulse: {x: 0, y: 0, z: 0}
+          canCancelIntoSpecial: 0
+          animationTrigger: 
+          clip: {fileID: 0}
+          hitVfx: {fileID: 0}
+          swingSfx: {fileID: 0}
+          hitSfx: {fileID: 0}
+          hitboxOffset: {x: 0, y: 0, z: 0}
+          hitboxSize: {x: 0, y: 0, z: 0}
+          layerMask:
+            serializedVersion: 2
+            m_Bits: 0
+        branches: []
+  requiredGround: 1
+  canBeInterrupted: 0
