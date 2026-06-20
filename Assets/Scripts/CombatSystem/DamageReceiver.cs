@@ -8,7 +8,7 @@ namespace Combat
     /// Attach to any enemy/damageable object.
     /// ComboController's HitboxController will call TakeDamage via OnHitConfirmed.
     /// </summary>
-    public class DamageReceiver : MonoBehaviour
+    public class DamageReceiver : MonoBehaviour, IDamageable
     {
         [Header("Stat")]
         [SerializeField] float _maxHealth = 100;
@@ -21,23 +21,26 @@ namespace Combat
         void Awake()
         {
             CurrentHealth = _maxHealth;
+            OnDeath += _onDeadHandler;
         }
 
         public void TakeDamage(float amount, AttackStep sourceStep)
         {
-            if (IsDead) return;
+            if (IsDead)
+            {
+                OnDeath.Invoke();
+            }
             CurrentHealth = Mathf.Max(0, CurrentHealth - amount);
-            OnHealthChanged.Invoke(CurrentHealth, _maxHealth);
+            Debug.Log("Damge taken: " + CurrentHealth);
+            OnHealthChanged?.Invoke(CurrentHealth, _maxHealth);
 
             // Apply impluse (UX)
             if (TryGetComponent<Rigidbody>(out Rigidbody _rb))
             {
-                _rb.AddForce(sourceStep.impulse, ForceMode.Impulse);
-            }
-
-            if (CurrentHealth <= 0)
-            {
-                OnDeath.Invoke();
+                if (!_rb.isKinematic)
+                {
+                    _rb.AddForce(sourceStep.impulse, ForceMode.Impulse);
+                }
             }
         }
 
@@ -45,7 +48,12 @@ namespace Combat
         {
             if (IsDead) return;
             CurrentHealth = Mathf.Max(0, CurrentHealth + amount);
-            OnHealthChanged.Invoke(CurrentHealth, _maxHealth);
+            OnHealthChanged?.Invoke(CurrentHealth, _maxHealth);
+        }
+
+        void _onDeadHandler()
+        {
+            Destroy(gameObject, .2f);
         }
     }
 

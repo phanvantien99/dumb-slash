@@ -7,7 +7,7 @@ namespace Combat
     /// Stores at most ONE pending input during an attack's buffer window.
     /// Call Flush() to consume it; it auto-expires after <see cref="TTL"/> seconds.
     /// </summary>
-    public class InputBuffer : MonoBehaviour
+    public class InputBuffer
     {
         public AttackInput? Pending { get; private set; }
         public bool HasInput => Pending.HasValue;

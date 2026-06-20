@@ -8,7 +8,7 @@ namespace Combat
     /// Determines whether the current AttackStep can be cancelled into a target action.
     /// Add cancel rules via RegisterRule() or override CanCancel() in a subclass.
     /// </summary>
-    public class CancelSystem : MonoBehaviour
+    public class CancelSystem
     {
 
         public class CancelRule
@@ -50,7 +50,7 @@ namespace Combat
             }
             return false;
         }
-        
+
     }
 
 }

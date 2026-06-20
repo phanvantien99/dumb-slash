@@ -8,7 +8,7 @@ namespace Combat
     /// Spawns a physics overlap check each FixedUpdate while Active.
     /// Prevents hitting the same target twice per step.
     /// </summary>
-    public class HitBoxController : MonoBehaviour
+    public class HitBoxController
     {
         public event Action<AttackStep, GameObject> OnHit;
         readonly HashSet<Collider> _hitThisStep = new();
@@ -46,7 +46,7 @@ namespace Combat
             {
                 if (_hitThisStep.Contains(collider)) continue;
                 _hitThisStep.Add(collider);
-                OnHit.Invoke(_currentStep, collider.gameObject);
+                OnHit?.Invoke(_currentStep, collider.gameObject);
             }
         }
 

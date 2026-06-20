@@ -45,21 +45,26 @@ namespace Combat
         {
             _map.Enable();
 
-            _lightAttack.performed += _ => _combo.ReceiveInput(AttackInput.Light);
-            _heavyAttack.performed += _ => _combo.ReceiveInput(AttackInput.Heavy);
-            _specialAttack.performed += _ => _combo.ReceiveInput(AttackInput.Special);
-            _dodge.performed += _ => _combo.ReceiveInput(AttackInput.Dodge);
+            _lightAttack.performed += OnLightAttack;
+            _heavyAttack.performed += OnHeavyAttack;
+            _specialAttack.performed += OnSpecialAttack;
+            _dodge.performed += OnDodge;
         }
 
         void OnDisable()
         {
-            _lightAttack.performed -= _ => _combo.ReceiveInput(AttackInput.Light);
+            _lightAttack.performed -= OnLightAttack;
             _heavyAttack.performed -= _ => _combo.ReceiveInput(AttackInput.Heavy);
-            _specialAttack.performed -= _ => _combo.ReceiveInput(AttackInput.Special);
+            _specialAttack.performed -= OnSpecialAttack;
             _dodge.performed -= _ => _combo.ReceiveInput(AttackInput.Dodge);
 
             _map.Disable();
         }
+
+        void OnLightAttack(InputAction.CallbackContext ctx) => _combo.ReceiveInput(AttackInput.Light);
+        void OnHeavyAttack(InputAction.CallbackContext ctx) => _combo.ReceiveInput(AttackInput.Heavy);
+        void OnSpecialAttack(InputAction.CallbackContext ctx) => _combo.ReceiveInput(AttackInput.Special);
+        void OnDodge(InputAction.CallbackContext ctx) => _combo.ReceiveInput(AttackInput.Dodge);
     }
 
 }

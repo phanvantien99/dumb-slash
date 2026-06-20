@@ -91,8 +91,8 @@ namespace Combat
                 return;
             }
 
-            string cancelTarget = input == AttackInput.Dodge ? "Dodge" : input == AttackInput.Special ? "Special" : null;
-            if (cancelTarget != null && _cancelSystem.CanCancel(CurrentStep, CurrentPhase, cancelTarget))
+            string cancelTarget = input == AttackInput.Dodge ? "Dodge" : "Special";
+            if (_cancelSystem.CanCancel(CurrentStep, CurrentPhase, cancelTarget))
             {
                 OnCancelTriggered?.Invoke(CurrentStep, cancelTarget);
                 StopAllCoroutines();

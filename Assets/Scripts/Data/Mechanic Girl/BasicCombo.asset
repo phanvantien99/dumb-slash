@@ -18,11 +18,11 @@ MonoBehaviour:
     step:
       stepName: Attack_1
       requiredInput: 0
-      startupDuration: 0.1
-      activeDuration: 0.2
-      recoveryDuration: 0.3
+      startupDuration: 0.08
+      activeDuration: 0.15
+      recoveryDuration: 0.25
       bufferWindow: 0.15
-      damage: 10
+      damage: 7
       hitStop: 0.05
       impulse: {x: 0, y: 0, z: 2}
       canCancelIntoSpecial: 0
@@ -31,83 +31,35 @@ MonoBehaviour:
       hitVfx: {fileID: 0}
       swingSfx: {fileID: 0}
       hitSfx: {fileID: 0}
-      hitboxOffset: {x: 0, y: 0, z: 1}
-      hitboxSize: {x: 1, y: 1, z: 1}
+      hitboxOffset: {x: 0, y: 0.5, z: 1}
+      hitboxSize: {x: 1, y: 1, z: 1.5}
       layerMask:
         serializedVersion: 2
-        m_Bits: 0
+        m_Bits: 256
     branches:
     - input: 0
       next:
         step:
-          stepName: 
+          stepName: Attack_Light_1
           requiredInput: 0
-          startupDuration: 0
-          activeDuration: 0
-          recoveryDuration: 0
-          bufferWindow: 0
-          damage: 0
-          hitStop: 0
-          impulse: {x: 0, y: 0, z: 0}
+          startupDuration: 0.08
+          activeDuration: 0.15
+          recoveryDuration: 0.25
+          bufferWindow: 0.15
+          damage: 8
+          hitStop: 0.05
+          impulse: {x: 0, y: 0, z: 2}
           canCancelIntoSpecial: 0
-          animationTrigger: 
+          animationTrigger: Attack_2
           clip: {fileID: 0}
           hitVfx: {fileID: 0}
           swingSfx: {fileID: 0}
           hitSfx: {fileID: 0}
-          hitboxOffset: {x: 0, y: 0, z: 0}
-          hitboxSize: {x: 0, y: 0, z: 0}
+          hitboxOffset: {x: 0, y: 0.5, z: 1}
+          hitboxSize: {x: 1, y: 1, z: 1.5}
           layerMask:
             serializedVersion: 2
-            m_Bits: 0
-        branches: []
-    - input: 0
-      next:
-        step:
-          stepName: 
-          requiredInput: 0
-          startupDuration: 0
-          activeDuration: 0
-          recoveryDuration: 0
-          bufferWindow: 0
-          damage: 0
-          hitStop: 0
-          impulse: {x: 0, y: 0, z: 0}
-          canCancelIntoSpecial: 0
-          animationTrigger: 
-          clip: {fileID: 0}
-          hitVfx: {fileID: 0}
-          swingSfx: {fileID: 0}
-          hitSfx: {fileID: 0}
-          hitboxOffset: {x: 0, y: 0, z: 0}
-          hitboxSize: {x: 0, y: 0, z: 0}
-          layerMask:
-            serializedVersion: 2
-            m_Bits: 0
-        branches: []
-    - input: 1
-      next:
-        step:
-          stepName: 
-          requiredInput: 0
-          startupDuration: 0
-          activeDuration: 0
-          recoveryDuration: 0
-          bufferWindow: 0
-          damage: 0
-          hitStop: 0
-          impulse: {x: 0, y: 0, z: 0}
-          canCancelIntoSpecial: 0
-          animationTrigger: 
-          clip: {fileID: 0}
-          hitVfx: {fileID: 0}
-          swingSfx: {fileID: 0}
-          hitSfx: {fileID: 0}
-          hitboxOffset: {x: 0, y: 0, z: 0}
-          hitboxSize: {x: 0, y: 0, z: 0}
-          layerMask:
-            serializedVersion: 2
-            m_Bits: 0
+            m_Bits: 256
         branches: []
   requiredGround: 1
   canBeInterrupted: 0
