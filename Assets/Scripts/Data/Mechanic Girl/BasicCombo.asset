@@ -18,15 +18,16 @@ MonoBehaviour:
     step:
       stepName: Attack_1
       requiredInput: 0
-      startupDuration: 0.08
-      activeDuration: 0.15
-      recoveryDuration: 0.25
-      bufferWindow: 0.15
+      startupDuration: 0.05
+      activeDuration: 0.1
+      recoveryDuration: 0.15
+      bufferWindow: 1.5
       damage: 7
-      hitStop: 0.05
+      hitStop: 1
       impulse: {x: 0, y: 0, z: 2}
       canCancelIntoSpecial: 0
       animationTrigger: Attack_1
+      animationSpeed: 1
       clip: {fileID: 0}
       hitVfx: {fileID: 0}
       swingSfx: {fileID: 0}
@@ -40,17 +41,18 @@ MonoBehaviour:
     - input: 0
       next:
         step:
-          stepName: Attack_Light_1
+          stepName: Attack_Light_2
           requiredInput: 0
-          startupDuration: 0.08
-          activeDuration: 0.15
-          recoveryDuration: 0.25
-          bufferWindow: 0.15
+          startupDuration: 0.1
+          activeDuration: 0.8
+          recoveryDuration: 0.7
+          bufferWindow: 1.5
           damage: 8
-          hitStop: 0.05
+          hitStop: 1
           impulse: {x: 0, y: 0, z: 2}
           canCancelIntoSpecial: 0
           animationTrigger: Attack_2
+          animationSpeed: 1.4
           clip: {fileID: 0}
           hitVfx: {fileID: 0}
           swingSfx: {fileID: 0}

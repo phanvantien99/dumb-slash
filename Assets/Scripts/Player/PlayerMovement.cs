@@ -4,7 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     float speed = 0f;
-    PlayerAnimator _playerAnimator;
+    PlayerAnimationController _playerAnimator;
 
     GroundChecker groundChecker;
 
@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _playerAnimator = GetComponent<PlayerAnimator>();
+        _playerAnimator = GetComponent<PlayerAnimationController>();
         groundChecker = GetComponentInChildren<GroundChecker>();
         _playerRotation = GetComponent<PlayerRotate>();
     }
@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
         if (input == Vector2.zero && groundChecker.IsGrounded)
         {
             _rb.linearVelocity = new Vector3(0f, 0f, 0f);
-            _playerAnimator.updateAnimator(0f);
+            _playerAnimator.SetMovementSpeed(0f);
             return; // exit if no input
         }
         Vector3 newMovement = new Vector3(input.x, 0f, input.y);
@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
                                             velocity.z * speed);
 
         }
-        _playerAnimator.updateAnimator(newMovement.magnitude);
+        _playerAnimator.SetMovementSpeed(newMovement.magnitude);
     }
 
     bool _onSlope()

@@ -31,6 +31,7 @@ namespace Combat
 
         [Header("Animation")]
         public string animationTrigger = "";
+        public float animationSpeed = 1f;
         public AnimationClip clip;
 
         [Header("VFX / SFX")]

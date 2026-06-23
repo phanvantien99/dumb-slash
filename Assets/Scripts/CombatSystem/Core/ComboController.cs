@@ -46,14 +46,14 @@ namespace Combat
         public bool IsAttacking => CurrentPhase != ComboPhase.None;
 
         //  Reference
-        Animator _animator;
+        PlayerAnimationController _animator;
         HitBoxController _hitBox;
         InputBuffer _buffer;
         CancelSystem _cancelSystem;
 
         void Awake()
         {
-            _animator = GetComponent<Animator>();
+            _animator = GetComponent<PlayerAnimationController>();
             _hitBox = new HitBoxController(transform);
             _buffer = new InputBuffer();
             _cancelSystem = new CancelSystem();
@@ -100,7 +100,7 @@ namespace Combat
                 return;
             }
 
-            if (CurrentPhase == ComboPhase.Recovery)
+            if (CurrentPhase == ComboPhase.Recovery || CurrentPhase == ComboPhase.Active)
             {
                 _buffer.Buffer(input, CurrentStep.bufferWindow);
                 OnInputBuffered?.Invoke(input);
@@ -139,10 +139,10 @@ namespace Combat
 
             // Startup
             CurrentPhase = ComboPhase.Startup;
-            if (!string.IsNullOrEmpty(step.animationTrigger))
-            {
-                _animator.SetTrigger(step.animationTrigger);
-            }
+            // if (!string.IsNullOrEmpty(step.animationTrigger))
+            // {
+            //     _animator.SetTrigger(step.animationTrigger);
+            // }
             OnAttackStarted?.Invoke(step, ComboCount);
             yield return new WaitForSeconds(step.startupDuration);
 
@@ -156,7 +156,7 @@ namespace Combat
             // recovery attack
             CurrentPhase = ComboPhase.Recovery;
             OnAttackEnd?.Invoke(step);
-            yield return new WaitForSeconds(step.recoveryDuration);
+            yield return _waitForAnimationComplete(step);
 
             //check buffer
             AttackInput? buffered = _buffer.Flush();
@@ -203,6 +203,13 @@ namespace Combat
             ActiveCombo = null;
             _buffer.Clear();
             _hitBox.Deactive();
+        }
+
+        IEnumerator _waitForAnimationComplete(AttackStep step)
+        {
+            float durationForRecoveryPhase = _animator.GetDurationForRecoveryPhase(step);
+            Debug.Log(durationForRecoveryPhase);
+            yield return new WaitForSeconds(durationForRecoveryPhase);
         }
     }
 
