@@ -6,7 +6,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(ComboController))]
-public class PlayerAnimationController : MonoBehaviour
+public class PlayerAnimationController : MonoBehaviour, IAnimationEventReceiver
 {
 
     [Header("Movement Smoothing")]
@@ -17,7 +17,12 @@ public class PlayerAnimationController : MonoBehaviour
 
     float _currentSpeed;
 
+    public event Action OnAttackActionEndEvent;
+    public event Action OnAttackHitFrameEvent;
 
+    public event Action OnStartupEndEvent;
+    public event Action OnActiveEndEvent;
+    public event Action OnRecoveryEndEvent;
 
 
     void Awake()
@@ -38,6 +43,17 @@ public class PlayerAnimationController : MonoBehaviour
             _damageReceiver.OnDeath += _handleDeath;
         }
 
+    }
+    void OnDisable() // ✅ thêm OnDisable
+    {
+        _combo.OnAttackStarted -= _handleAttackStarted;
+        _combo.OnComboFinished -= _handleComboFinished;
+
+        if (_damageReceiver != null)
+        {
+            _damageReceiver.OnHealthChanged -= _handleHealthChanged;
+            _damageReceiver.OnDeath -= _handleDeath;
+        }
     }
     // ── Public API (gọi từ PlayerMovement hoặc PlayerController) ─────────────
 
@@ -60,7 +76,13 @@ public class PlayerAnimationController : MonoBehaviour
             _animator.SetBool("IsAttacking", true);
             _animator.SetFloat("AttackSpeed", step.animationSpeed);
             // _animator.CrossFadeInFixedTime(step.animationTrigger, .05f, 0, 0f);
-            _animator.SetTrigger(step.animationTrigger);
+            // _animator.SetTrigger(step.animationTrigger);
+            _animator.CrossFadeInFixedTime(
+                step.animationTrigger,
+                .05f,  // 0.05s blend
+                0,     // layer 0
+                0f     // bắt đầu từ frame 0 của Attack_2
+            );
         }
     }
 
@@ -85,15 +107,29 @@ public class PlayerAnimationController : MonoBehaviour
     }
 
 
-    public float GetDurationForRecoveryPhase(AttackStep step)
+    public void OnAttackActionEnd()
     {
-        AnimatorClipInfo[] clipInfos = _animator.GetCurrentAnimatorClipInfo(0);
-        if (clipInfos.Length > 0)
-        {
-            float clipLength = clipInfos[0].clip.length / step.animationSpeed;
-            float remainingDuration = Mathf.Max(clipLength - (step.activeDuration + step.startupDuration)); // only get time of phase recovery
-            return Mathf.Max(step.recoveryDuration, remainingDuration);
-        }
-        return step.recoveryDuration;
+        OnAttackActionEndEvent?.Invoke();
     }
+
+    public void OnAttackHitFrame()
+    {
+        OnAttackHitFrameEvent?.Invoke();
+    }
+
+    public void OnStartupEnd()
+    {
+        _combo.NotifyStartupEnd();
+    }
+
+    public void OnActiveEnd()
+    {
+        _combo.NotifyActiveEnd();
+    }
+
+    public void OnRecoveryEnd()
+    {
+        _combo.NotifyRecoveryEnd();
+    }
+
 }

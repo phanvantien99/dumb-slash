@@ -45,6 +45,12 @@ namespace Combat
         public int ComboCount { get; private set; }
         public bool IsAttacking => CurrentPhase != ComboPhase.None;
 
+        bool _startupEnded;
+        bool _activeEnded;
+        bool _recoveryEnded;
+
+
+
         //  Reference
         PlayerAnimationController _animator;
         HitBoxController _hitBox;
@@ -96,11 +102,12 @@ namespace Combat
             {
                 OnCancelTriggered?.Invoke(CurrentStep, cancelTarget);
                 StopAllCoroutines();
+                _resetFlags();
                 ResetState();
                 return;
             }
 
-            if (CurrentPhase == ComboPhase.Recovery || CurrentPhase == ComboPhase.Active)
+            if (CurrentStep != null)
             {
                 _buffer.Buffer(input, CurrentStep.bufferWindow);
                 OnInputBuffered?.Invoke(input);
@@ -137,36 +144,48 @@ namespace Combat
             CurrentStep = step;
             ComboCount++;
 
+            // Reset flags
+            _startupEnded = false;
+            _activeEnded = false;
+            _recoveryEnded = false;
+
+            // Timeout riêng cho từng phase
+            float clipLength = step.clip != null
+                ? step.clip.length / step.animationSpeed
+                : step.startupDuration + step.activeDuration + step.recoveryDuration;
+
+            float startupTimeout = step.clip != null ? clipLength * 0.5f : step.startupDuration * 2f;
+            float activeTimeout = step.clip != null ? clipLength * 0.75f : step.activeDuration * 2f;
+            float recoveryTimeout = clipLength; // toàn bộ clip là max cho recovery
+
             // Startup
             CurrentPhase = ComboPhase.Startup;
-            // if (!string.IsNullOrEmpty(step.animationTrigger))
-            // {
-            //     _animator.SetTrigger(step.animationTrigger);
-            // }
             OnAttackStarted?.Invoke(step, ComboCount);
-            yield return new WaitForSeconds(step.startupDuration);
+            yield return _waitForFlag(() => _startupEnded, startupTimeout);
 
-            // Active attack
+            // Active
             CurrentPhase = ComboPhase.Active;
             _hitBox.Activate(step);
             OnAttackActive?.Invoke(step);
-            yield return new WaitForSeconds(step.activeDuration);
+            yield return _waitForFlag(() => _activeEnded, activeTimeout);
             _hitBox.Deactive();
 
-            // recovery attack
+            // Recovery
             CurrentPhase = ComboPhase.Recovery;
             OnAttackEnd?.Invoke(step);
-            yield return _waitForAnimationComplete(step);
+            yield return _waitForFlag(() => _recoveryEnded, recoveryTimeout);
 
-            //check buffer
+            // Check buffer
             AttackInput? buffered = _buffer.Flush();
             if (buffered.HasValue && CurrentBranch != null)
             {
-                ComboBranch next = ActiveCombo.GetNextComboBranch(CurrentBranch, buffered.Value);
+                ComboBranch next = ActiveCombo.GetNextComboBranch(
+                    CurrentBranch, buffered.Value
+                );
                 if (next != null)
                 {
                     CurrentBranch = next;
-                    StartCoroutine(ExecuteStep(next.step));
+                    yield return StartCoroutine(ExecuteStep(next.step));
                     yield break;
                 }
             }
@@ -174,7 +193,6 @@ namespace Combat
             int finalCount = ComboCount;
             ResetState();
             OnComboFinished?.Invoke(finalCount);
-            yield return null;
         }
 
         void HandleHit(AttackStep step, GameObject target)
@@ -205,11 +223,30 @@ namespace Combat
             _hitBox.Deactive();
         }
 
-        IEnumerator _waitForAnimationComplete(AttackStep step)
+        public void NotifyStartupEnd() => _startupEnded = true;
+        public void NotifyActiveEnd() => _activeEnded = true;
+        public void NotifyRecoveryEnd() => _recoveryEnded = true;
+
+
+        IEnumerator _waitForFlag(Func<bool> flag, float timeout)
         {
-            float durationForRecoveryPhase = _animator.GetDurationForRecoveryPhase(step);
-            Debug.Log(durationForRecoveryPhase);
-            yield return new WaitForSeconds(durationForRecoveryPhase);
+            float elapsed = 0f;
+            while (!flag() && elapsed < timeout)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            if (!flag())
+                Debug.LogWarning("[ComboController] Animation Event timeout! " +
+                                "Kiểm tra clip có đủ 3 Animation Events chưa.");
+        }
+
+        void _resetFlags()
+        {
+            _startupEnded = false;
+            _activeEnded = false;
+            _recoveryEnded = false;
         }
     }
 

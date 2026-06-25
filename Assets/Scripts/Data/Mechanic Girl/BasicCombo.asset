@@ -28,7 +28,7 @@ MonoBehaviour:
       canCancelIntoSpecial: 0
       animationTrigger: Attack_1
       animationSpeed: 1
-      clip: {fileID: 0}
+      clip: {fileID: 7400000, guid: b725d9288cef717469555f38366d0c1f, type: 2}
       hitVfx: {fileID: 0}
       swingSfx: {fileID: 0}
       hitSfx: {fileID: 0}
@@ -43,8 +43,8 @@ MonoBehaviour:
         step:
           stepName: Attack_Light_2
           requiredInput: 0
-          startupDuration: 0.1
-          activeDuration: 0.8
+          startupDuration: 0.05
+          activeDuration: 0.1
           recoveryDuration: 0.7
           bufferWindow: 1.5
           damage: 8
@@ -53,7 +53,7 @@ MonoBehaviour:
           canCancelIntoSpecial: 0
           animationTrigger: Attack_2
           animationSpeed: 1.4
-          clip: {fileID: 0}
+          clip: {fileID: 7400000, guid: a717f4dcfb3010e4badeabfd3ae15d10, type: 2}
           hitVfx: {fileID: 0}
           swingSfx: {fileID: 0}
           hitSfx: {fileID: 0}
