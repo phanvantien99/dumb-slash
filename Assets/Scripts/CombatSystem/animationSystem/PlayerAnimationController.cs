@@ -8,6 +8,10 @@ using UnityEngine;
 [RequireComponent(typeof(ComboController))]
 public class PlayerAnimationController : MonoBehaviour, IAnimationEventReceiver
 {
+    static readonly int _hashSpeed = Animator.StringToHash("Speed");
+    static readonly int _hashIsAttacking = Animator.StringToHash("IsAttacking");
+    static readonly int _hashAttackSpeed = Animator.StringToHash("AttackSpeed");
+    static readonly int _hashIdle = Animator.StringToHash("Idle");
 
     [Header("Movement Smoothing")]
     [SerializeField] float _speedDampTime = 0.1f;
@@ -15,15 +19,8 @@ public class PlayerAnimationController : MonoBehaviour, IAnimationEventReceiver
     ComboController _combo;
     DamageReceiver _damageReceiver;
 
-    float _currentSpeed;
-
     public event Action OnAttackActionEndEvent;
     public event Action OnAttackHitFrameEvent;
-
-    public event Action OnStartupEndEvent;
-    public event Action OnActiveEndEvent;
-    public event Action OnRecoveryEndEvent;
-
 
     void Awake()
     {
@@ -63,20 +60,16 @@ public class PlayerAnimationController : MonoBehaviour, IAnimationEventReceiver
     /// </summary>
     public void SetMovementSpeed(float speed)
     {
-        _currentSpeed = Mathf.Lerp(_currentSpeed, speed, Time.deltaTime / _speedDampTime);
-        _animator.SetFloat("Speed", _currentSpeed);
+        // _currentSpeed = Mathf.Lerp(_currentSpeed, speed, Time.deltaTime / _speedDampTime);
+        _animator.SetFloat(_hashSpeed, speed);
     }
 
     void _handleAttackStarted(AttackStep step, int comboCount)
     {
-        // Convention: animationTrigger trên AttackStep phải trùng tên
-        // parameter trong Animator Controller (ví dụ: "Attack_1", "Attack_Heavy")
         if (!string.IsNullOrEmpty(step.animationTrigger))
         {
-            _animator.SetBool("IsAttacking", true);
-            _animator.SetFloat("AttackSpeed", step.animationSpeed);
-            // _animator.CrossFadeInFixedTime(step.animationTrigger, .05f, 0, 0f);
-            // _animator.SetTrigger(step.animationTrigger);
+            _animator.SetBool(_hashIsAttacking, true);
+            _animator.SetFloat(_hashAttackSpeed, step.animationSpeed);
             _animator.CrossFadeInFixedTime(
                 step.animationTrigger,
                 .05f,  // 0.05s blend
@@ -88,7 +81,8 @@ public class PlayerAnimationController : MonoBehaviour, IAnimationEventReceiver
 
     void _handleComboFinished(int totalHits)
     {
-        _animator.SetBool("IsAttacking", false);
+        _animator.SetBool(_hashIsAttacking, false);
+        _animator.CrossFadeInFixedTime(_hashIdle, .1f, 0, 0f);
         // Reset về locomotion — không cần làm gì thêm nếu
         // transition "Has Exit Time" được set đúng trong Animator Controller
         // Nếu cần force reset:

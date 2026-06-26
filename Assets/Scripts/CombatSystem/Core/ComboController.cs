@@ -52,14 +52,14 @@ namespace Combat
 
 
         //  Reference
-        PlayerAnimationController _animator;
+        PlayerState _playerState;
         HitBoxController _hitBox;
         InputBuffer _buffer;
         CancelSystem _cancelSystem;
 
         void Awake()
         {
-            _animator = GetComponent<PlayerAnimationController>();
+            _playerState = GetComponent<PlayerState>();
             _hitBox = new HitBoxController(transform);
             _buffer = new InputBuffer();
             _cancelSystem = new CancelSystem();
@@ -144,6 +144,7 @@ namespace Combat
             CurrentStep = step;
             ComboCount++;
 
+            _playerState.IsAttacking = true;
             // Reset flags
             _startupEnded = false;
             _activeEnded = false;
@@ -221,6 +222,7 @@ namespace Combat
             ActiveCombo = null;
             _buffer.Clear();
             _hitBox.Deactive();
+            _playerState.IsAttacking = false;
         }
 
         public void NotifyStartupEnd() => _startupEnded = true;

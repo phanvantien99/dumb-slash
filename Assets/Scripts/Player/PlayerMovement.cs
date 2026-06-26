@@ -3,7 +3,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
-    float speed = 0f;
+    float maxSpeed = 0f;
+    float _currentSpeed = 0f;
     PlayerAnimationController _playerAnimator;
 
     GroundChecker groundChecker;
@@ -16,9 +17,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private LayerMask hitLayerMask;
     Rigidbody _rb;
+
+    PlayerState _playerState;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _playerState = GetComponent<PlayerState>();
         _rb = GetComponent<Rigidbody>();
         _playerAnimator = GetComponent<PlayerAnimationController>();
         groundChecker = GetComponentInChildren<GroundChecker>();
@@ -36,6 +40,15 @@ public class PlayerMovement : MonoBehaviour
         Vector3 newMovement = new Vector3(input.x, 0f, input.y);
         _playerRotation.setDirection(newMovement); // update direction for rotation
 
+        // check lock before move
+        if (_playerState.IsActionLocked || _playerState.IsMovementLocked)
+        {
+            _currentSpeed = maxSpeed * 10 / 100;
+        }
+        else
+        {
+            _currentSpeed = maxSpeed;
+        }
 
         // calculate velocity
         Vector3 velocity = _getPlayerVelocity(newMovement);
@@ -44,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
         if (_onSlope()) // for the slope()
         {
             Vector3 direction = _getSlopeMoveDirection(velocity);
-            _rb.linearVelocity = direction * speed;
+            _rb.linearVelocity = direction * _currentSpeed;
 
             if (input == Vector2.zero)
             {
@@ -54,9 +67,9 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             // transform.Translate(newMovement * speed * Time.deltaTime, Space.World);
-            _rb.linearVelocity = new Vector3(velocity.x * speed,
+            _rb.linearVelocity = new Vector3(velocity.x * _currentSpeed,
                                             _rb.linearVelocity.y,
-                                            velocity.z * speed);
+                                            velocity.z * _currentSpeed);
 
         }
         _playerAnimator.SetMovementSpeed(newMovement.magnitude);

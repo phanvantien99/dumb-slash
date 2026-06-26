@@ -2156,6 +2156,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 803374342507860915, guid: e59565e485cffd94dbee8efeec05988f, type: 3}
+      propertyPath: maxSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 803374342507860915, guid: e59565e485cffd94dbee8efeec05988f, type: 3}
       propertyPath: hitLayerMask.m_Bits
       value: 64
       objectReference: {fileID: 0}
@@ -2449,6 +2453,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1165165851695246860, guid: e59565e485cffd94dbee8efeec05988f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5111935016460809968}
+    - targetCorrespondingSourceObject: {fileID: 1165165851695246860, guid: e59565e485cffd94dbee8efeec05988f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5111935016460809975}
   m_SourcePrefab: {fileID: 100100000, guid: e59565e485cffd94dbee8efeec05988f, type: 3}
 --- !u!114 &5111935016460809951 stripped
 MonoBehaviour:
@@ -2632,7 +2639,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a080821d2b4d6c44aa72991a3ec1a2d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
-  _speedDampTime: 0.1
+  _speedDampTime: 0.05
+--- !u!114 &5111935016460809975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287673147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4d6cdb33516984f9b8eac0e857c5f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerState
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
