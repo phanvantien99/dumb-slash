@@ -24,7 +24,7 @@ namespace Combat
             OnDeath += _onDeadHandler;
         }
 
-        public void TakeDamage(float amount, AttackStep sourceStep)
+        public void TakeDamage(float amount, AttackStep sourceStep, Vector3 attackerPosition)
         {
             if (IsDead)
             {
@@ -39,7 +39,10 @@ namespace Combat
             {
                 if (!_rb.isKinematic)
                 {
-                    _rb.AddForce(sourceStep.impulse, ForceMode.Impulse);
+                    Vector3 knockbackDir = (transform.position - attackerPosition).normalized;
+                    knockbackDir.y = 0f;
+                    float thrustPower = sourceStep.impulse.magnitude * 100; // get float strength
+                    _rb.AddForce(knockbackDir * thrustPower, ForceMode.Impulse);
                 }
             }
         }

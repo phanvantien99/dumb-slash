@@ -8,7 +8,8 @@ namespace Combat
     public enum ComboPhase { None, Startup, Active, Recovery }
 
     [System.Serializable]
-    public class AttackStep
+    [CreateAssetMenu(menuName = "Combat/AttackStep")]
+    public class AttackStep : ScriptableObject
     {
         [Header("Identity")]
         public string stepName = "Attack_1";

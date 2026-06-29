@@ -82,9 +82,9 @@ namespace Combat
 
         void OnDrawGizmos()
         {
-            if (_showHitBox && CurrentPhase == ComboPhase.Active)
+            if (_showHitBox && (CurrentPhase == ComboPhase.Active || CurrentPhase == ComboPhase.Startup))
             {
-                _hitBox.DrawGizmos(Color.red);
+                _hitBox.DrawGizmos(Color.cyan, CurrentPhase);
             }
         }
 

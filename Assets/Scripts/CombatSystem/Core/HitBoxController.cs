@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Combat
 {
@@ -51,14 +52,27 @@ namespace Combat
         }
 
 
-        public void DrawGizmos(Color color)
+        public void DrawGizmos(Color color, ComboPhase phase)
         {
             if (_currentStep == null) return;
-            Gizmos.color = color;
-            Vector3 center = _origin.TransformPoint(_currentStep.hitboxOffset);
-            Gizmos.matrix = Matrix4x4.TRS(center, _origin.rotation, Vector3.one);
-            Gizmos.DrawWireCube(Vector3.zero, _currentStep.hitboxSize);
-            Gizmos.matrix = Matrix4x4.identity;
+            if (phase == ComboPhase.Active)
+            {
+                Gizmos.color = Color.red;
+                Vector3 center = _origin.TransformPoint(_currentStep.hitboxOffset);
+                Gizmos.matrix = Matrix4x4.TRS(center, _origin.rotation, Vector3.one);
+                Gizmos.DrawWireCube(Vector3.zero, _currentStep.hitboxSize);
+                Gizmos.matrix = Matrix4x4.identity;
+
+            }
+
+            if (phase == ComboPhase.Startup)
+            {
+                Gizmos.color = Color.yellow;
+                Vector3 center = _origin.TransformPoint(_currentStep.hitboxOffset);
+                Gizmos.matrix = Matrix4x4.TRS(center, _origin.rotation, Vector3.one);
+                Gizmos.DrawWireCube(Vector3.zero, _currentStep.hitboxSize);
+                Gizmos.matrix = Matrix4x4.identity;
+            }
         }
 
     }

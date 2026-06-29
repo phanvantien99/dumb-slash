@@ -41,7 +41,7 @@ namespace Combat
             if (target.TryGetComponent<DamageReceiver>(out DamageReceiver damageReceiver))
             {
                 float damage = step.damage;
-                damageReceiver.TakeDamage(damage, step);
+                damageReceiver.TakeDamage(damage, step, transform.position);
             }
 
             // VFX

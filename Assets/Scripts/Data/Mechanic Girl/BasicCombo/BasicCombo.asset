@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f68cf42f7157b449ba657698ea3db3b, type: 3}
+  m_Name: BasicCombo
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.ComboData
+  comboName: Basic combo
+  characterId: Mechanic Girl
+  root:
+    step: {fileID: 11400000, guid: d30fb8c43c59a4544a1a163ed4b9882b, type: 2}
+    branches:
+    - input: 0
+      next:
+        step: {fileID: 11400000, guid: f69d14f588dd3de4bbe5eeee3afbf767, type: 2}
+        branches: []
+  requiredGround: 1
+  canBeInterrupted: 0
